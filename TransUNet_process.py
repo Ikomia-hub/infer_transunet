@@ -229,6 +229,7 @@ class TransUNetProcessFactory(dataprocess.CProcessFactory):
         self.info.path = "Plugins/Python"
         self.info.version = "1.0.0"
         # self.info.iconPath = "your path to a specific icon"
+        self.info.iconPath = "icons/transunet.png"
         self.info.article = "TransUNet: Transformers Make Strong Encoders for Medical Image Segmentation"
         self.info.journal = "not published yet"
         self.info.year = 2021
