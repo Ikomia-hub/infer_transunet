@@ -238,7 +238,7 @@ class TransUNetProcessFactory(dataprocess.CProcessFactory):
         # Code source repository
         self.info.repository = "https://github.com/Beckschen/TransUNet"
         # Keywords used for search
-        self.info.keywords = "segmentation, transformers, encoder, decoder"
+        self.info.keywords = "semantic, segmentation, encoder, decoder, Transformers, U-Net "
 
     def create(self, param=None):
         # Create process object
