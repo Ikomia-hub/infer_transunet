@@ -27,6 +27,7 @@ import numpy as np
 from torchvision import transforms
 import cv2
 import os
+from torchvision.transforms import InterpolationMode
 
 # Your imports below
 
@@ -98,7 +99,6 @@ class TransUNetProcess(dataprocess.CImageProcess2d):
         # Get input :
         input = self.getInput(0)
         srcImage = input.getImage()
-        h,w,c = np.shape(srcImage)
 
         # Get output :
         mask_output = self.getOutput(0)
@@ -128,12 +128,16 @@ class TransUNetProcess(dataprocess.CImageProcess2d):
             self.model.eval()
 
         if self.model is not None and srcImage is not None:
+            h, w, c = np.shape(srcImage)
+
+            downsample_img = transforms.Resize(size=(self.cfg.img_size, self.cfg.img_size),interpolation=InterpolationMode.BICUBIC)
+            upsample_pred = transforms.Resize(size=(h,w), interpolation=InterpolationMode.NEAREST)
 
             with torch.no_grad():
                 srcImage = torch.tensor([srcImage]).permute(0,3,1,2).float()
                 if torch.cuda.is_available():
                     srcImage=srcImage.cuda()
-                srcImage = transforms.functional.resize(srcImage, size=(self.cfg.img_size, self.cfg.img_size))
+                srcImage = downsample_img(srcImage)
 
                 if self.cfg.pretrained_path is not None:
                     mean = np.array([123.675, 116.280, 103.530], dtype=np.float)
@@ -143,7 +147,7 @@ class TransUNetProcess(dataprocess.CImageProcess2d):
                 pred = self.model(srcImage)
 
                 pred = torch.argmax(torch.softmax(pred, dim=1), dim=1, keepdim=True)
-                pred = transforms.functional.resize(pred, size=(h, w))
+                pred = upsample_pred(pred)
                 pred= pred.squeeze()
                 pred = pred.cpu().numpy()
 
