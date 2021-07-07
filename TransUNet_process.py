@@ -43,20 +43,20 @@ class TransUNetParam(core.CProtocolTaskParam):
         self.configFile = ""
         self.modelFile = ""
 
-    def setParamMap(self, paramMap):
+    def setParamMap(self, param_map):
         # Set parameters values from Ikomia application
         # Parameters values are stored as string and accessible like a python dict
-        self.configFile = paramMap["configFile"]
-        self.modelFile = paramMap["modelFile"]
+        self.configFile = param_map["configFile"]
+        self.modelFile = param_map["modelFile"]
         pass
 
     def getParamMap(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
-        paramMap = core.ParamMap()
-        paramMap["configFile"] = self.configFile
-        paramMap["modelFile"] = self.modelFile
-        return paramMap
+        param_map = core.ParamMap()
+        param_map["configFile"] = self.configFile
+        param_map["modelFile"] = self.modelFile
+        return param_map
 
 
 # --------------------
@@ -158,7 +158,7 @@ class TransUNetProcess(dataprocess.CImageProcess2d):
             mask_output.setImage(dstImage)
 
             # Create random color map
-            if self.colors == None or param.update:
+            if self.colors is None or param.update:
                 n = len(self.classes)
                 self.colors = [[0, 0, 0]]
                 for i in range(n - 1):
@@ -185,18 +185,23 @@ class TransUNetProcess(dataprocess.CImageProcess2d):
         offset_x = 10
         offset_y = 5
         interline = 5
-        legend = np.full((img_h, img_w, 3), dtype=np.int, fill_value=255)
+        legend = np.full((img_h, img_w, 3), dtype="uint8", fill_value=255)
         font = cv2.FONT_HERSHEY_SIMPLEX
         fontscale = 1
         thickness = 2
+
         for i, c in enumerate(self.colors):
-            legend = cv2.rectangle(legend, (offset_x, i * rectangle_height + offset_y + interline),
+
+            legend = cv2.rectangle(legend,
+                                   (offset_x, i * rectangle_height + offset_y + interline),
                                    (offset_x + rectangle_width, (i + 1) * rectangle_height + offset_y - interline),
-                                   color=c, thickness=-1)
-            legend = cv2.putText(legend,self.classes[i],(3*offset_x+rectangle_width,(i+1)*rectangle_height+
-                                                           offset_y-interline - rectangle_height//3),
-                                  font, fontscale, color=[0,0,0], thickness=thickness)
+                                   c, -1)
+            legend = cv2.putText(legend,
+                                 self.classes[i],
+                                 (3*offset_x+rectangle_width, (i+1)*rectangle_height + offset_y-interline - rectangle_height//3),
+                                 font, fontscale, color=[0, 0, 0], thickness=thickness)
         return legend
+
 
 class Normalize(object):
     def __init__(self, mean, std):
@@ -208,6 +213,7 @@ class Normalize(object):
             t.sub_(m).div_(s)
 
         return image
+
 
 # --------------------
 # - Factory class to build process object
@@ -226,9 +232,8 @@ class TransUNetProcessFactory(dataprocess.CProcessFactory):
         self.info.authors = "Jieneng Chen, Yongyi Lu, Qihang Yu, Xiangde Luo, Ehsan Adeli, Yan Wang, Le Lu, " \
                             "Alan L. Yuille, Yuyin Zhou"
         # relative path -> as displayed in Ikomia application process tree
-        self.info.path = "Plugins/Python"
+        self.info.path = "Plugins/Python/Segmentation"
         self.info.version = "1.0.0"
-        # self.info.iconPath = "your path to a specific icon"
         self.info.iconPath = "icons/transunet.png"
         self.info.article = "TransUNet: Transformers Make Strong Encoders for Medical Image Segmentation"
         self.info.journal = "not published yet"
