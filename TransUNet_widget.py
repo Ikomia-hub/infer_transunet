@@ -17,25 +17,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ikomia import utils, core, dataprocess
-import TransUNet_process as processMod
-
-#PyQt GUI framework
+from TransUNet.TransUNet_process import TransUNetParam
+# PyQt GUI framework
 from PyQt5.QtWidgets import *
 from ikomia.utils.pyqtutils import BrowseFileWidget
-
+from ikomia.utils import qtconversion
 
 
 # --------------------
 # - Class which implements widget associated with the process
 # - Inherits PyCore.CProtocolTaskWidget from Ikomia API
 # --------------------
-class TransUNetWidget(core.CProtocolTaskWidget):
+class TransUNetWidget(core.CWorkflowTaskWidget):
 
     def __init__(self, param, parent):
-        core.CProtocolTaskWidget.__init__(self, parent)
+        core.CWorkflowTaskWidget.__init__(self, parent)
 
         if param is None:
-            self.parameters = processMod.TransUNetParam()
+            self.parameters = TransUNetParam()
         else:
             self.parameters = param
 
@@ -53,7 +52,7 @@ class TransUNetWidget(core.CProtocolTaskWidget):
         self.gridLayout.addWidget(self.qlabelModelFile, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.qbrowseWidgetModelFile, 1, 1, 1, 2)
         # PyQt -> Qt wrapping
-        layout_ptr = utils.PyQtToQt(self.gridLayout)
+        layout_ptr = qtconversion.PyQtToQt(self.gridLayout)
 
         # Set widget layout
         self.setLayout(layout_ptr)

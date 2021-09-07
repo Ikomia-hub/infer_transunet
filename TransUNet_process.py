@@ -21,7 +21,7 @@ import copy
 import random
 import torch
 import yaml
-from networks.vit_seg_modeling import VisionTransformer as ViT_seg
+from TransUNet.networks.vit_seg_modeling import VisionTransformer as ViT_seg
 from ml_collections import ConfigDict
 import numpy as np
 from torchvision import transforms
@@ -35,10 +35,10 @@ from torchvision.transforms import InterpolationMode
 # - Class to handle the process parameters
 # - Inherits PyCore.CProtocolTaskParam from Ikomia API
 # --------------------
-class TransUNetParam(core.CProtocolTaskParam):
+class TransUNetParam(core.CWorkflowTaskParam):
 
     def __init__(self):
-        core.CProtocolTaskParam.__init__(self)
+        core.CWorkflowTaskParam.__init__(self)
         # Place default value initialization here
         self.configFile = ""
         self.modelFile = ""
@@ -63,15 +63,15 @@ class TransUNetParam(core.CProtocolTaskParam):
 # - Class which implements the process
 # - Inherits PyCore.CProtocolTask or derived from Ikomia API
 # --------------------
-class TransUNetProcess(dataprocess.CImageProcess2d):
+class TransUNetProcess(dataprocess.C2dImageTask):
 
     def __init__(self, name, param):
-        dataprocess.CImageProcess2d.__init__(self, name)
+        dataprocess.C2dImageTask.__init__(self, name)
 
         # add output + set data type
         self.setOutputDataType(core.IODataType.IMAGE_LABEL, 0)
-        self.addOutput(dataprocess.CImageProcessIO(core.IODataType.IMAGE))
-        self.addOutput(dataprocess.CImageProcessIO(core.IODataType.IMAGE))
+        self.addOutput(dataprocess.CImageIO(core.IODataType.IMAGE))
+        self.addOutput(dataprocess.CImageIO(core.IODataType.IMAGE))
         self.model = None
         self.cfg = None
         self.colors = None
@@ -219,10 +219,10 @@ class Normalize(object):
 # - Factory class to build process object
 # - Inherits PyDataProcess.CProcessFactory from Ikomia API
 # --------------------
-class TransUNetProcessFactory(dataprocess.CProcessFactory):
+class TransUNetProcessFactory(dataprocess.CTaskFactory):
 
     def __init__(self):
-        dataprocess.CProcessFactory.__init__(self)
+        dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
         self.info.name = "TransUNet"
         self.info.shortDescription = "TransUNet inference for semantic segmentation"

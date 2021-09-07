@@ -17,8 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ikomia import dataprocess
-import TransUNet_process as processMod
-import TransUNet_widget as widgetMod
 
 
 # --------------------
@@ -31,9 +29,11 @@ class TransUNet(dataprocess.CPluginProcessInterface):
         dataprocess.CPluginProcessInterface.__init__(self)
 
     def getProcessFactory(self):
+        from TransUNet.TransUNet_process import TransUNetProcessFactory
         # Instantiate process object
-        return processMod.TransUNetProcessFactory()
+        return TransUNetProcessFactory()
 
     def getWidgetFactory(self):
+        from TransUNet.TransUNet_widget import TransUNetWidgetFactory
         # Instantiate associated widget object
-        return widgetMod.TransUNetWidgetFactory()
+        return TransUNetWidgetFactory()
