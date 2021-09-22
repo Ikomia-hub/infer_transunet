@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ikomia import utils, core, dataprocess
-from TransUNet.TransUNet_process import TransUNetParam
+from infer_transunet.infer_transunet_process import TransunetParam
 # PyQt GUI framework
 from PyQt5.QtWidgets import *
 from ikomia.utils.pyqtutils import BrowseFileWidget
@@ -28,13 +28,13 @@ from ikomia.utils import qtconversion
 # - Class which implements widget associated with the process
 # - Inherits PyCore.CProtocolTaskWidget from Ikomia API
 # --------------------
-class TransUNetWidget(core.CWorkflowTaskWidget):
+class TransunetWidget(core.CWorkflowTaskWidget):
 
     def __init__(self, param, parent):
         core.CWorkflowTaskWidget.__init__(self, parent)
 
         if param is None:
-            self.parameters = TransUNetParam()
+            self.parameters = TransunetParam()
         else:
             self.parameters = param
 
@@ -73,13 +73,13 @@ class TransUNetWidget(core.CWorkflowTaskWidget):
 # - Factory class to build process widget object
 # - Inherits PyDataProcess.CWidgetFactory from Ikomia API
 # --------------------
-class TransUNetWidgetFactory(dataprocess.CWidgetFactory):
+class TransunetWidgetFactory(dataprocess.CWidgetFactory):
 
     def __init__(self):
         dataprocess.CWidgetFactory.__init__(self)
         # Set the name of the process -> it must be the same as the one declared in the process factory class
-        self.name = "TransUNet"
+        self.name = "infer_transunet"
 
     def create(self, param):
         # Create widget object
-        return TransUNetWidget(param, None)
+        return TransunetWidget(param, None)

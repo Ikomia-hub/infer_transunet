@@ -21,7 +21,7 @@ import copy
 import random
 import torch
 import yaml
-from TransUNet.networks.vit_seg_modeling import VisionTransformer as ViT_seg
+from infer_transunet.networks.vit_seg_modeling import VisionTransformer as ViT_seg
 from ml_collections import ConfigDict
 import numpy as np
 from torchvision import transforms
@@ -35,7 +35,7 @@ from torchvision.transforms import InterpolationMode
 # - Class to handle the process parameters
 # - Inherits PyCore.CProtocolTaskParam from Ikomia API
 # --------------------
-class TransUNetParam(core.CWorkflowTaskParam):
+class TransunetParam(core.CWorkflowTaskParam):
 
     def __init__(self):
         core.CWorkflowTaskParam.__init__(self)
@@ -63,7 +63,7 @@ class TransUNetParam(core.CWorkflowTaskParam):
 # - Class which implements the process
 # - Inherits PyCore.CProtocolTask or derived from Ikomia API
 # --------------------
-class TransUNetProcess(dataprocess.C2dImageTask):
+class Transunet(dataprocess.C2dImageTask):
 
     def __init__(self, name, param):
         dataprocess.C2dImageTask.__init__(self, name)
@@ -80,7 +80,7 @@ class TransUNetProcess(dataprocess.C2dImageTask):
 
         # Create parameters class
         if param is None:
-            self.setParam(TransUNetParam())
+            self.setParam(TransunetParam())
         else:
             self.setParam(copy.deepcopy(param))
 
@@ -219,12 +219,12 @@ class Normalize(object):
 # - Factory class to build process object
 # - Inherits PyDataProcess.CProcessFactory from Ikomia API
 # --------------------
-class TransUNetProcessFactory(dataprocess.CTaskFactory):
+class TransunetFactory(dataprocess.CTaskFactory):
 
     def __init__(self):
         dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
-        self.info.name = "TransUNet"
+        self.info.name = "infer_transunet"
         self.info.shortDescription = "TransUNet inference for semantic segmentation"
         self.info.description = "This Ikomia plugin can make inference of pre-trained model from " \
                                 "a given config file and a weight file produced by the Ikomia " \
@@ -248,4 +248,4 @@ class TransUNetProcessFactory(dataprocess.CTaskFactory):
 
     def create(self, param=None):
         # Create process object
-        return TransUNetProcess(self.info.name, param)
+        return Transunet(self.info.name, param)
