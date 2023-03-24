@@ -53,9 +53,8 @@ class TransunetParam(core.CWorkflowTaskParam):
     def get_values(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
-        param_map = {}
-        param_map["configFile"] = self.configFile
-        param_map["modelFile"] = self.modelFile
+        param_map = {"configFile": self.configFile,
+                    "modelFile": self.modelFile}
         return param_map
 
 
