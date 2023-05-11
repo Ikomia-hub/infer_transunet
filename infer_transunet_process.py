@@ -41,20 +41,20 @@ class TransunetParam(core.CWorkflowTaskParam):
         core.CWorkflowTaskParam.__init__(self)
         # Place default value initialization here
         self.config_file = ""
-        self.model_path = ""
+        self.model_weight_file = ""
 
     def set_values(self, param_map):
         # Set parameters values from Ikomia application
         # Parameters values are stored as string and accessible like a python dict
         self.config_file = param_map["config_file"]
-        self.model_path = param_map["model_path"]
+        self.model_weight_file = param_map["model_weight_file"]
         pass
 
     def get_values(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
         param_map = {"config_file": self.config_file,
-                    "model_path": self.model_path}
+                    "model_weight_file": self.model_weight_file}
         return param_map
 
 
@@ -113,9 +113,9 @@ class Transunet(dataprocess.CSemanticSegmentationTask):
             if torch.cuda.is_available():
                 self.model.cuda()
 
-            if os.path.isfile(param.model_path):
+            if os.path.isfile(param.model_weight_file):
                 print("Loading weights...")
-                self.model.load_state_dict(torch.load(param.model_path))
+                self.model.load_state_dict(torch.load(param.model_weight_file))
                 print("Weights loaded")
             self.model.eval()
 

@@ -45,7 +45,7 @@ class TransunetWidget(core.CWorkflowTaskWidget):
         self.qbrowseWidgetConfigFile = BrowseFileWidget(path=self.parameters.config_file, mode=QFileDialog.ExistingFile)
 
         self.qlabelModelFile = QLabel("Select a model file (.pth) :")
-        self.qbrowseWidgetModelFile = BrowseFileWidget(path=self.parameters.model_path, mode=QFileDialog.ExistingFile)
+        self.qbrowseWidgetModelFile = BrowseFileWidget(path=self.parameters.model_weight_file, mode=QFileDialog.ExistingFile)
 
         self.gridLayout.addWidget(self.qlabelConfigFile, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.qbrowseWidgetConfigFile, 0, 1, 1, 2)
@@ -62,7 +62,7 @@ class TransunetWidget(core.CWorkflowTaskWidget):
 
         # Get parameters from widget
         self.parameters.config_file = self.qbrowseWidgetConfigFile.qedit_file.text()
-        self.parameters.model_path = self.qbrowseWidgetModelFile.qedit_file.text()
+        self.parameters.model_weight_file = self.qbrowseWidgetModelFile.qedit_file.text()
         self.parameters.update = True
 
         # Send signal to launch the process
