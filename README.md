@@ -19,10 +19,10 @@
     </a> 
 </p>
 
-This Ikomia plugin can make inference of pre-trained model from a given config file and a weight file produced by the Ikomia plugin TransUNet_Train.
+Run TransUNet model from a given config file and a weight file trained with the Ikomia algorithm [train_transunet](https://app.ikomia.ai/hub/algorithms/train_transunet/). 
 
-[Insert illustrative image here. Image must be accessible publicly, in algorithm Github repository for example.
-<img src="images/illustration.png"  alt="Illustrative image" width="30%" height="30%">]
+![Medical TranUnet illustration](https://149695847.v2.pressablecdn.com/wp-content/uploads/2021/03/pasted-image-0-11.png)
+
 
 ## :rocket: Use with Ikomia API
 
@@ -36,20 +36,26 @@ pip install ikomia
 
 #### 2. Create your workflow
 
-[Change the sample image URL to fit algorithm purpose]
 
 ```python
-import ikomia
 from ikomia.dataprocess.workflow import Workflow
+from ikomia.utils.displayIO import display
 
 # Init your workflow
 wf = Workflow()
 
 # Add algorithm
 algo = wf.add_task(name="infer_transunet", auto_connect=True)
+algo.set_parameters({
+    "config_file": "path/to/config.yaml",
+    "model_weight_file": "path/to/best_model.pth",
+})
 
 # Run on your image  
-wf.run_on(url="example_image.png")
+wf.run_on(path="path/to/image")
+
+# Inpect your result
+display(algo.get_image_with_mask())
 ```
 
 ## :sunny: Use with Ikomia Studio
@@ -60,32 +66,7 @@ Ikomia Studio offers a friendly UI with the same features as the API.
 
 - For additional guidance on getting started with Ikomia Studio, check out [this blog post](https://www.ikomia.ai/blog/how-to-get-started-with-ikomia-studio).
 
-## :pencil: Set algorithm parameters
 
-[Explain each algorithm parameters]
-
-[Change the sample image URL to fit algorithm purpose]
-
-```python
-import ikomia
-from ikomia.dataprocess.workflow import Workflow
-
-# Init your workflow
-wf = Workflow()
-
-# Add algorithm
-algo = wf.add_task(name="infer_transunet", auto_connect=True)
-
-algo.set_parameters({
-    "param1": "value1",
-    "param2": "value2",
-    ...
-})
-
-# Run on your image  
-wf.run_on(url="example_image.png")
-
-```
 
 ## :mag: Explore algorithm outputs
 
@@ -100,18 +81,19 @@ wf = Workflow()
 
 # Add algorithm
 algo = wf.add_task(name="infer_transunet", auto_connect=True)
+algo.set_parameters({
+    "config_file": "path/to/config.yaml",
+    "model_weight_file": "path/to/best_model.pth",
+})
 
 # Run on your image  
-wf.run_on(url="example_image.png")
+wf.run_on(path="path/to/image")
 
 # Iterate over outputs
-for output in algo.get_outputs()
+for output in algo.get_outputs():
     # Print information
     print(output)
     # Export it to JSON
     output.to_json()
 ```
 
-## :fast_forward: Advanced usage 
-
-[optional]
