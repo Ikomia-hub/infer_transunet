@@ -177,9 +177,6 @@ class TransunetFactory(dataprocess.CTaskFactory):
         # Set process information as string here
         self.info.name = "infer_transunet"
         self.info.short_description = "TransUNet inference for semantic segmentation"
-        self.info.description = "This Ikomia plugin can make inference of pre-trained model from " \
-                                "a given config file and a weight file produced by the Ikomia " \
-                                "plugin TransUNet_Train."
         self.info.authors = "Jieneng Chen, Yongyi Lu, Qihang Yu, Xiangde Luo, Ehsan Adeli, Yan Wang, Le Lu, " \
                             "Alan L. Yuille, Yuyin Zhou"
         # relative path -> as displayed in Ikomia application process tree
@@ -193,7 +190,8 @@ class TransunetFactory(dataprocess.CTaskFactory):
         # URL of documentation
         self.info.documentation_link = "https://arxiv.org/abs/2102.04306"
         # Code source repository
-        self.info.repository = "https://github.com/Beckschen/TransUNet"
+        self.info.repository = "https://github.com/Ikomia-hub/infer_transunet"
+        self.info.original_repository = "https://github.com/Beckschen/TransUNet"
         # Keywords used for search
         self.info.keywords = "semantic, segmentation, encoder, decoder, Transformers, U-Net "
 
